@@ -1,25 +1,74 @@
-# 🎩 Hi, I'm [Aap Ka Naam]
-### Cybersecurity Enthusiast | Network Security & Penetration Testing
+Markdown
+# 🛡️ Assalamu Alaikum! I'm Syed Muhammad Ali Bukhari (RedHat-Boy) 🚀
 
-I am actively building hands-on experience in **Network Reconnaissance**, **Vulnerability Assessment**, and **Linux System Administration**. I document my hacking labs, custom automation scripts, and write-ups directly from my Kali Linux terminal.
+____ edHat-Boy | Cyber Security Specialist & Ethical Hacker
+/ | _   _ | |   ___  _ __  / |  ___   ___  _   _  _ __ () |  _   _
+| |    | | | || ' \ / _ | '| __ \ / _ \ / || | | || '|| || || | | |
+| |_ | || || |) ||  /| |     ) ||  /| ( | || || |   | || | | || |
+_| _, ||./ _|||    |/  _| _| _,|||   || _| _, |
+|/                                                             |/
 
----
 
-### 🛠️ Tech Stack & Skills
-- **Operating Systems:** Kali Linux, RedHat, Ubuntu
-- **Networking & Recon:** Nmap, Wireshark, Netcat, ARP Discovery
-- **Frameworks & Tools:** Burp Suite, Metasploit, Gobuster
-- **Automation & Scripting:** Bash, Python, Git & Markdown Automation
-- **AI Integration:** Local LLMs (Jan.ai), OpenRouter API Workflows
-
----
-
-### 📌 Current Focus & Projects
-- 🧪 **Automated Lab Logger:** CLI-based Bash script that automatically logs terminal commands and captures screenshots to GitHub Pages.
-- 🎯 **CTF & PenTesting Labs:** Continuous network scanning and service enumeration write-ups.
+<p align="center">
+  <img src="https://img.shields.io/badge/Focus-Offensive%20Security-red?style=for-the-badge&logo=kalilinux" />
+  <img src="https://img.shields.io/badge/Specialization-Penetration%20Testing-blue?style=for-the-badge&logo=metasploit" />
+  <img src="https://img.shields.io/badge/Status-Available%20for%20Projects-brightgreen?style=for-the-badge" />
+</p>
 
 ---
 
-### 🌐 Connect & Portfolio
-- 🌐 **Portfolio Site:** https://[your-username].github.io/portfolio
-- 💼 **LinkedIn:** [Aap ka LinkedIn Link]
+## 👤 About Me & Professional Bio
+
+Passionate **Cybersecurity Researcher & Ethical Hacker** with a strong focus on Offensive Security, Network Vulnerability Analysis, and Web Application Security. Experienced in identifying security loopholes, simulating real-world cyber attacks, and helping organizations fortify their digital infrastructure.
+
+- 🎓 **Specialization:** Ethical Hacking, Network Security & Threat Modeling
+- 🏆 **Certifications & Training:** Advanced Cybersecurity Training & Penetration Testing
+- 🎯 **Current Focus:** Deep Hands-on Pentesting Labs, CTFs, Automated Recon Scripts & Bug Bounty
+- ⚡ **Fun Fact:** I analyze traffic packets for fun and love breaking complex systems to build stronger defenses.
+
+---
+
+## 🛠️ Technical Skill Matrix
+
+| Domain | Tools & Technologies |
+| :--- | :--- |
+| **Recon & Enumeration** | `Nmap`, `Enum4linux`, `SNMP`, `Nikto`, `Whois`, `Sublist3r` |
+| **Exploitation & Pentesting** | `Metasploit`, `Msfvenom`, `Burp Suite`, `Hydra`, `SQLmap` |
+| **Network & Wireless Analysis** | `Wireshark`, `tcpdump`, `Aircrack-ng`, `hping3` |
+| **Web & Application Security** | OWASP Top 10, SQLi, XSS, Session Hijacking, Directory Traversal |
+| **System & Cloud Security** | Linux Hardening, IDS/Firewall Evasion, Cryptography |
+
+---
+
+## 🧪 Interactive Attack Chain & Defense Simulator
+
+I built a web-based interactive cybersecurity simulator mapping the complete offensive pentesting pipeline: **Reconnaissance → Scanning → Exploitation → Post-Exploitation**.
+
+### 🌟 Key Interactive Modules:
+- 🌐 **Network Topology & Attack Path Visualization:** Real-time threat posture mapping.
+- 🖥️ **Nmap Scan Simulator:** Interactive port discovery with live options (`-sS`, `-sV`, `-O`).
+- 💥 **DoS/DDoS Traffic Monitor:** Real-time server latency and traffic load metrics.
+- 🍪 **Session Hijacking Lab:** Visualizing cookie security & web auth bypass mechanics.
+- 🐛 **CVE Vulnerability Lookup:** Identifying service-specific CVEs and exposure vectors.
+
+👉 **[🚀 Launch Interactive Attack Simulator Live](https://RedHat-Boy.github.io/simulator.html)** *(Requires `simulator.html` in your repo)*
+
+---
+
+## 📊 GitHub Stats & Activity
+
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=RedHat-Boy&show_icons=true&theme=dark&count_private=true" width="48%" />
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=RedHat-Boy&layout=compact&theme=dark" width="48%" />
+</p>
+
+---
+
+## 🌐 Connect & Collaborate
+
+- 💼 **LinkedIn:** [Your LinkedIn Profile](https://linkedin.com)
+- 🐦 **Twitter/X:** [Your Twitter Profile](https://twitter.com)
+- ✉️ **Email:** your.email@example.com
+
+---
+*“Security is not a product, but a process.”*
