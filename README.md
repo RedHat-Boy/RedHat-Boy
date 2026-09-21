@@ -1,13 +1,13 @@
-Markdown
-# 🛡️ Assalamu Alaikum! I'm Syed Muhammad Ali Bukhari (RedHat-Boy) 🚀
+🛡️ Assalamu Alaikum! I'm Syed Muhammad Ali Bukhari (RedHat-Boy) 🚀
 
-____ edHat-Boy | Cyber Security Specialist & Ethical Hacker
-/ | _   _ | |   ___  _ __  / |  ___   ___  _   _  _ __ () |  _   _
-| |    | | | || ' \ / _ | '| __ \ / _ \ / || | | || '|| || || | | |
-| |_ | || || |) ||  /| |     ) ||  /| ( | || || |   | || | | || |
-_| _, ||./ _|||    |/  _| _| _,|||   || _| _, |
-|/                                                             |/
 
+```text
+ ____ edHat-Boy | Cyber Security Specialist & Ethical Hacker
+|  _ \  ___   __| | |  | |  __ _| |_  | |__   ___  _   _ 
+| |_) |/ _ \ / _` | |_| | / _` | __| | '_ \ / _ \| | | |
+|  _ <|  __/| (_| |  _  || (_| | |_  | |_) | (_) | |_| |
+|_| \_\\___| \__,_|_| |_| \__,_|\__| |_.__/ \___/ \__, |
+                                                  |___/
 
 <p align="center">
   <img src="https://img.shields.io/badge/Focus-Offensive%20Security-red?style=for-the-badge&logo=kalilinux" />
@@ -32,7 +32,7 @@ Passionate **Cybersecurity Researcher & Ethical Hacker** with a strong focus on 
 
 | Domain | Tools & Technologies |
 | :--- | :--- |
-| **Recon & Enumeration** | `Nmap`, `Enum4linux`, `SNMP`, `Nikto`, `Whois`, `Sublist3r` |
+| **Recon & Enumeration** | `Nmap`, `Enum4linux`, `SNMP`, `Nikto`, `Whois`, `Sublist3r + subbrute`, `Subfind3r`, `TheHarvester`, `Socialmapper`, `Userrecon osint`, `Netdiscover`, `dig`, `Ghunt`, 'Exploit Database`, 'GoogleDorking`, 'Grep.app`, 'Intel Owl Aggregation`, 'O365-Squatting`, 'S3Scanner`, 'osintframework.com`, 'reNgine Aggregation`, ' |
 | **Exploitation & Pentesting** | `Metasploit`, `Msfvenom`, `Burp Suite`, `Hydra`, `SQLmap` |
 | **Network & Wireless Analysis** | `Wireshark`, `tcpdump`, `Aircrack-ng`, `hping3` |
 | **Web & Application Security** | OWASP Top 10, SQLi, XSS, Session Hijacking, Directory Traversal |
@@ -51,7 +51,7 @@ I built a web-based interactive cybersecurity simulator mapping the complete off
 - 🍪 **Session Hijacking Lab:** Visualizing cookie security & web auth bypass mechanics.
 - 🐛 **CVE Vulnerability Lookup:** Identifying service-specific CVEs and exposure vectors.
 
-👉 **[🚀 Launch Interactive Attack Simulator Live](https://RedHat-Boy.github.io/simulator.html)** *(Requires `simulator.html` in your repo)*
+[👉 🚀 Launch Interactive Attack Simulator Live](https://www.google.com/search?q=https://SyedMAliBukhari.github.io/RedHat-Boy/simulator.html&utm_source=gemini)
 
 ---
 
@@ -66,6 +66,9 @@ I built a web-based interactive cybersecurity simulator mapping the complete off
 
 ## 🌐 Connect & Collaborate
 
+⏳ Social Media & Contact links are currently under setup.
+
+(LinkedIn, Twitter, Facebook, Email, and WhatsApp handles will be linked here soon.)
 - 💼 **LinkedIn:** [Your LinkedIn Profile](https://linkedin.com)
 - 🐦 **Twitter/X:** [Your Twitter Profile](https://twitter.com)
 - ✉️ **Email:** your.email@example.com
