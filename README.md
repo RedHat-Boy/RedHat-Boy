@@ -1,7 +1,7 @@
 <div align="center">
 
-# 🛡️ REDHAT-BOY
-### Cyber Security Specialist & Offensive Security Researcher
+# 🛡️ Asalam-O-Alikum I'M Syed Muhammad Ali Bukhari (REDHAT-BOY)
+### Cyber Security Fintech Specialist & Offensive Security Researcher
 <p align="center">
   <img src="https://img.shields.io/badge/Focus-Offensive%20Security-red?style=for-the-badge&logo=kalilinux" />
   <img src="https://img.shields.io/badge/Specialization-Penetration%20Testing-blue?style=for-the-badge&logo=metasploit" />
@@ -55,7 +55,7 @@ I built a web-based interactive cybersecurity simulator mapping the complete off
 - 🍪 **Session Hijacking Lab:** Visualizing cookie security & web auth bypass mechanics.
 - 🐛 **CVE Vulnerability Lookup:** Identifying service-specific CVEs and exposure vectors.
 
-👉 **[🚀 Launch Interactive Attack Simulator Live](https://RedHat-Boy.github.io/simulator.html)**
+👉 **[🚀 Launch Interactive Attack Simulator Live](https://redhat-boy.github.io/RedHat-Boy/simulator.html)**
 
 ---
 
