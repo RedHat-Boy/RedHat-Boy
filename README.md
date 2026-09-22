@@ -2,7 +2,12 @@
 
 # 🛡️ REDHAT-BOY
 ### Cyber Security Specialist & Offensive Security Researcher
-
+<p align="center">
+  <img src="https://img.shields.io/badge/Focus-Offensive%20Security-red?style=for-the-badge&logo=kalilinux" />
+  <img src="https://img.shields.io/badge/Specialization-Penetration%20Testing-blue?style=for-the-badge&logo=metasploit" />
+  <img src="https://img.shields.io/badge/Status-Available%20for%20Projects-brightgreen?style=for-the-badge" />
+</p>
+<pre>
   _ \  ____| __ \  |   |    \ __ __|     __ )   _ \\ \   / 
  |   | __|   |   | |   |   _ \   |       __ \  |   |\   /  
  __ <  |     |   | ___ |  ___ \  |_____| |   | |   |   |   
@@ -10,12 +15,7 @@ _| \_\_____|____/ _|  _|_/    _\_|      ____/ \___/   _|
                                                            
                                    (Offensive Security)
 
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Focus-Offensive%20Security-red?style=for-the-badge&logo=kalilinux" />
-  <img src="https://img.shields.io/badge/Specialization-Penetration%20Testing-blue?style=for-the-badge&logo=metasploit" />
-  <img src="https://img.shields.io/badge/Status-Available%20for%20Projects-brightgreen?style=for-the-badge" />
-</p>
+</pre>
 
 </div>
 
