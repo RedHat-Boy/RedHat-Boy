@@ -1,19 +1,23 @@
-🛡️ Assalamu Alaikum! I'm Syed Muhammad Ali Bukhari (RedHat-Boy) 🚀
+<div align="center">
 
+# 🛡️ REDHAT-BOY
+### Cyber Security Specialist & Offensive Security Researcher
 
-```text
- ____ edHat-Boy | Cyber Security Specialist & Ethical Hacker
-|  _ \  ___   __| | |  | |  __ _| |_  | |__   ___  _   _ 
-| |_) |/ _ \ / _` | |_| | / _` | __| | '_ \ / _ \| | | |
-|  _ <|  __/| (_| |  _  || (_| | |_  | |_) | (_) | |_| |
-|_| \_\\___| \__,_|_| |_| \__,_|\__| |_.__/ \___/ \__, |
-                                                  |___/
+  _ \  ____| __ \  |   |    \ __ __|     __ )   _ \\ \   / 
+ |   | __|   |   | |   |   _ \   |       __ \  |   |\   /  
+ __ <  |     |   | ___ |  ___ \  |_____| |   | |   |   |   
+_| \_\_____|____/ _|  _|_/    _\_|      ____/ \___/   _|   
+                                                           
+                                   (Offensive Security)
+
 
 <p align="center">
   <img src="https://img.shields.io/badge/Focus-Offensive%20Security-red?style=for-the-badge&logo=kalilinux" />
   <img src="https://img.shields.io/badge/Specialization-Penetration%20Testing-blue?style=for-the-badge&logo=metasploit" />
   <img src="https://img.shields.io/badge/Status-Available%20for%20Projects-brightgreen?style=for-the-badge" />
 </p>
+
+</div>
 
 ---
 
@@ -32,7 +36,7 @@ Passionate **Cybersecurity Researcher & Ethical Hacker** with a strong focus on 
 
 | Domain | Tools & Technologies |
 | :--- | :--- |
-| **Recon & Enumeration** | `Nmap`, `Enum4linux`, `SNMP`, `Nikto`, `Whois`, `Sublist3r + subbrute`, `Subfind3r`, `TheHarvester`, `Socialmapper`, `Userrecon osint`, `Netdiscover`, `dig`, `Ghunt`, 'Exploit Database`, 'GoogleDorking`, 'Grep.app`, 'Intel Owl Aggregation`, 'O365-Squatting`, 'S3Scanner`, 'osintframework.com`, 'reNgine Aggregation`, ' |
+| **Recon & Enumeration** | `Nmap`, `Enum4linux`, `SNMP`, `Nikto`, `Whois`, `Sublist3r` |
 | **Exploitation & Pentesting** | `Metasploit`, `Msfvenom`, `Burp Suite`, `Hydra`, `SQLmap` |
 | **Network & Wireless Analysis** | `Wireshark`, `tcpdump`, `Aircrack-ng`, `hping3` |
 | **Web & Application Security** | OWASP Top 10, SQLi, XSS, Session Hijacking, Directory Traversal |
@@ -51,27 +55,24 @@ I built a web-based interactive cybersecurity simulator mapping the complete off
 - 🍪 **Session Hijacking Lab:** Visualizing cookie security & web auth bypass mechanics.
 - 🐛 **CVE Vulnerability Lookup:** Identifying service-specific CVEs and exposure vectors.
 
-[👉 🚀 Launch Interactive Attack Simulator Live](https://www.google.com/search?q=https://SyedMAliBukhari.github.io/RedHat-Boy/simulator.html&utm_source=gemini)
+👉 **[🚀 Launch Interactive Attack Simulator Live](https://RedHat-Boy.github.io/simulator.html)**
 
 ---
 
 ## 📊 GitHub Stats & Activity
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=RedHat-Boy&show_icons=true&theme=dark&count_private=true" width="48%" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=RedHat-Boy&layout=compact&theme=dark" width="48%" />
+  <img src="https://github-readme-stats.vercel.app/api?username=SyedMAliBukhari&show_icons=true&theme=dark&count_private=true" width="48%" />
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=SyedMAliBukhari&layout=compact&theme=dark" width="48%" />
 </p>
 
 ---
 
 ## 🌐 Connect & Collaborate
 
-⏳ Social Media & Contact links are currently under setup.
+> ⏳ **Social Media & Contact links are currently under setup.**
 
-(LinkedIn, Twitter, Facebook, Email, and WhatsApp handles will be linked here soon.)
-- 💼 **LinkedIn:** [Your LinkedIn Profile](https://linkedin.com)
-- 🐦 **Twitter/X:** [Your Twitter Profile](https://twitter.com)
-- ✉️ **Email:** your.email@example.com
+*(LinkedIn, Twitter, Facebook, Email, and WhatsApp handles will be linked here soon.)*
 
 ---
 *“Security is not a product, but a process.”*
