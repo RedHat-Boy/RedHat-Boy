@@ -11,12 +11,12 @@
 </p>
 
 <pre>
-  _ \   ____| __ \   |   |    \ __ __|     __ )   _ \\ \   / 
- |   | __|   |   | |   |   _ \   |        __ \  |   |\ \ /  
- __ <  |     |   | ___ |  ___ \  |_____| |   | |   |  \  /   
-_| \_\_____|____/ _|  _|_/    _\_|       ____/ \___/   _|   
-                                                            
-                                       (Offensive Security)
+                               
+  _ \  ____| __ \  |   |    \ __ __|     __ )   _ \\ \   / 
+ |   | __|   |   | |   |   _ \   |       __ \  |   |\   /  
+ __ <  |     |   | ___ |  ___ \  |_____| |   | |   |   |   
+_| \_\_____|____/ _|  _|_/    _\_|      ____/ \___/   _|   
+                              	      (Offensive Security)
 </pre>
 
 > *"I help organizations stay secure by thinking like an attacker — finding weaknesses before real hackers do."*
